@@ -1,10 +1,15 @@
 # app.py
+import os
+
+# ─── Suppress OpenCV GUI / libxcb crash on headless servers ──────────────────
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
+os.environ["YOLO_VERBOSE"] = "False"
+os.environ["QT_QPA_PLATFORM"] = "offscreen"
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from ultralytics import YOLO
-import os
 from PIL import Image, ImageDraw
 import numpy as np
 import cv2
@@ -28,20 +33,21 @@ class User(db.Model):
 # Ensure upload folder exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# ─── Model Loading (safe, non-interactive) ──────────────────────────────────
-# Uses ultralytics YOLO directly — no torch.hub interactive prompts
+# ─── Model Loading (lazy — avoids import crash on headless servers) ──────────
 _model_s = None
 _model_l = None
 
 def get_model_small():
     global _model_s
     if _model_s is None:
+        from ultralytics import YOLO
         _model_s = YOLO("yolov5s.pt")
     return _model_s
 
 def get_model_large():
     global _model_l
     if _model_l is None:
+        from ultralytics import YOLO
         _model_l = YOLO("yolov5l.pt")
     return _model_l
 
