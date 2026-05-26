@@ -1,7 +1,7 @@
 # People Counter App
 
 📌 Project: People Counter App
-👨‍💻 Student: Hamsa Bhargav
+👨‍💻 Student: Besetty Shubham
 📱 Domain: Web Development / Computer Vision
 ⏳ Duration: Mini Project (Third Year)  
 
