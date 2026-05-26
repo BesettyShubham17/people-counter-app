@@ -5,6 +5,7 @@ import os
 os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
 os.environ["YOLO_VERBOSE"] = "False"
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
@@ -12,7 +13,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from PIL import Image, ImageDraw
 import numpy as np
-import cv2
 from datetime import datetime
 
 app = Flask(__name__)
@@ -67,6 +67,7 @@ def count_people(image_path):
     return len(boxes), boxes
 
 def draw_box_plot(frame, count_history, max_history=100):
+    import cv2
     height, width = frame.shape[:2]
     plot_height = 100
     plot_y = height - plot_height - 10
@@ -97,6 +98,7 @@ def draw_box_plot(frame, count_history, max_history=100):
     return frame
 
 def process_video(video_path):
+    import cv2
     """Process video frame-by-frame using YOLOv5l via ultralytics."""
     model = get_model_large()
 
