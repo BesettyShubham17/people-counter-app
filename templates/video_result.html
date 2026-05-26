@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-5xl mx-auto glass-panel rounded-2xl p-8 animate-fade-in-up mt-8">
+    <div class="text-center mb-10 flex flex-col sm:flex-row justify-between items-center">
+        <div class="text-left">
+            <h2 class="text-3xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-600">Video Analysis Complete</h2>
+            <p class="text-gray-400">Results for <span class="text-white font-medium">{{ original_filename }}</span></p>
+        </div>
+        <a href="{{ url_for('home') }}" class="mt-4 sm:mt-0 px-6 py-2 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/30 rounded-xl transition-all duration-300 flex items-center font-medium text-yellow-400 hover:text-yellow-300">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Analyze Another
+        </a>
+    </div>
+    
+    <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Annotated Video Player -->
+        <div class="lg:col-span-2 relative group rounded-2xl overflow-hidden border border-yellow-500/20 shadow-[0_0_15px_rgba(212,175,55,0.2)] bg-black">
+            <video controls class="w-full h-auto max-h-[600px]" preload="metadata">
+                <source src="{{ url_for('static', filename='uploads/' + video_filename) }}" type="video/webm">
+                <source src="{{ url_for('static', filename='uploads/' + video_filename) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <!-- Detailed Timestamp Report -->
+        <div class="bg-black/60 border border-yellow-500/20 rounded-2xl p-6 flex flex-col h-full max-h-[600px]">
+            <h3 class="text-xl font-bold mb-4 flex items-center text-yellow-400">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Density Timeline
+            </h3>
+            
+            <div class="overflow-y-auto flex-1 pr-2 space-y-3 scrollbar-thin scrollbar-thumb-yellow-500/50 scrollbar-track-black/40">
+                {% for result in frame_results %}
+                <div class="flex justify-between items-center p-3 glass rounded-lg hover:bg-yellow-500/10 transition-colors border border-yellow-500/10">
+                    <div class="flex items-center">
+                        <span class="bg-yellow-500/20 text-yellow-300 text-xs px-2 py-1 rounded font-mono mr-3 border border-yellow-500/30">
+                            {{ result.timestamp }}
+                        </span>
+                    </div>
+                    <div class="font-bold text-lg {% if result.count > 10 %}text-red-400{% elif result.count > 5 %}text-orange-400{% else %}text-green-400{% endif %}">
+                        {{ result.count }} <span class="text-sm font-normal text-gray-400">people</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4 pt-4 border-t border-yellow-500/20 text-center text-sm text-gray-500">
+                Data sampled from key frames
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

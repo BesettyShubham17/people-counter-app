@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-md mx-auto glass-panel rounded-2xl p-10 animate-fade-in-up mt-12">
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-600">Create Account</h2>
+        <p class="text-gray-400 mt-2">Join us to start analyzing crowds</p>
+    </div>
+    
+    <form method="POST" class="space-y-6">
+        <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2" for="username">
+                Username
+            </label>
+            <input class="w-full bg-black/40 border border-yellow-500/20 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all placeholder-gray-500"
+                   type="text" name="username" placeholder="Choose a username" required>
+        </div>
+        <div>
+            <label class="block text-gray-300 text-sm font-medium mb-2" for="password">
+                Password
+            </label>
+            <input class="w-full bg-black/40 border border-yellow-500/20 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all placeholder-gray-500"
+                   type="password" name="password" placeholder="Create a password" required>
+        </div>
+        
+        <button class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black font-bold py-3 px-4 rounded-xl shadow-[0_0_15px_rgba(212,175,55,0.4)] transform transition-all active:scale-95 mt-4"
+                type="submit">
+            Sign Up
+        </button>
+    </form>
+    
+    <p class="mt-8 text-center text-gray-400">
+        Already have an account? <a href="{{ url_for('login') }}" class="text-yellow-500 hover:text-yellow-400 font-semibold transition-colors">Log In</a>
+    </p>
+</div>
+{% endblock %}

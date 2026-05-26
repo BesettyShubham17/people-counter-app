@@ -1,0 +1,854 @@
+ 
+                                                                  CROWD DENSITY ESTIMATIOR  
+A PROJECT REPORT  
+                                       Submitted by  
+ 
+            K.Yaswanth Kumar        22331A1253  
+            H. Bhargav                      22331A1237  
+            B. Shubham                    22331A1217  
+ 
+                          In the fulfi llment for the Mini Project  
+                                                    of 
+                        BACHELOR OF TECHNOLOGY  
+ 
+                        Under the Esteemed Guidance of  
+                     Dr. P. Srinivasa Rao (M. Tech , Ph .D)  
+                         Mrs. B. Sujatha (MCA, M.Tech)  
+                          Mr. R. Ravi Kumar (M.  Tech)  
+ 
+            DEPARTMENT OF INF ORMATION TECHNOLOGY  
+ MAHARAJ VIJAYARAM GAJAPATHI RAJ COLLEGE  
+                       OF ENGINEERING (AUTONOMOUS)  
+VIZIANAGARAM -535005, AP (INDIA)  
+
+ 
+                                                          DECLARATION  
+We hereby declare that the project entitled "CROWD DENSITY 
+ESTIMATOR"  submitted in fulfillment of the Mini Project 
+requirement for the B.Tech Degree  is our original work. This project 
+has not been submitted previously for any degree or any other similar 
+title. 
+We further confirm that this work was carried out as a team of three 
+members  and is the result of our collective effort.  
+                                                               
+                                                       K.Yaswanth Kumar  22331A1253  
+                                                        H. Bhargav   22331A1237  
+                                                        B. Shubham  22331A1217  
+                         
+ 
+Place :  
+Date :  
+ 
+ 
+ 
+ 
+                                                         CERTIFICATE  
+ 
+This is to certify that the project entitled "CROWD DENSITY ESTIMATIOR"  
+is the bonafide work carried out by k.Yaswanth ku mar(22331A1253), H. Bhargav 
+(22331A1237), B. Shubham(22331A1217) of B.Tech VI Sem Information 
+Technology, MVGR College of Engineering (Autonomous), Vizianagaram, 
+during the year 2022 -2023, in fulfilment of the Mini project in Bachelor of 
+Technology and tha t project has not formed the basis for the submission 
+previously of any degree or any other similar title.
+ 
+ 
+ 
+Signature of Project Supervisor:                                             
+ 
+Dr.M.Srinivasa Rao  
+Ph.D, M.Tech        
+Associate Professor  
+ 
+IT Department  
+ 
+MVGR College of Engineering  
+ 
+  
+Signature  of Head of the 
+Department:  
+Dr.P.Srinivasa Rao  
+Ph.D, M.Tech   
+Professor  
+ 
+IT Department  
+ 
+MVGR College of Engineering  
+ 
+
+ 
+                                                          TABLE OF CONTENTS  
+Chapter  Title  Page No.  
+1 ABSTRACT                          1 
+2 INTRODUCTION                    2 
+3 PROBLEM STATEMENT        3 
+4 SYSTEM REQUIREMENTS        4 
+4.1                                                   HARDWARE REQUIREMENTS  
+4.2                                                   SOFTWARE R EQUIREMENTS  
+5 TECHNOLOGIES USED                5 
+6 EXISTING SYSTEM               6 
+7 PROPOSED SYSTEM                 7 
+8 USE-CASES                                 8 
+9 PROCESS -FLOW                         9 
+10 SAMPLE CODE                        10 
+11 OUTPUT SCREENSHOTS       11 
+12 ADVANTAGES                        12 
+13 LIMITATIONS                        13      
+14                                     CONCLUSION                               14 
+15 FUTURESCOPE                        15 
+ 
+ 1. ABSTRACT  
+This project presents the development of an advanced object detection system 
+leveraging Flask and YOLO (You Only Look Once). The system is designed 
+to efficiently detect and classify objects in images or live video streams, 
+providing real -time analysis with high accuracy and speed. YOLO's single -
+shot detection mechanism makes it highly effective for real -world 
+applications where rapid processing is essential.  
+The implementation involves a user -friendly web interface where users can 
+upload images or access live camera feeds for object recognition. The detected 
+objects are highlighted with bounding boxes and labelled  with confidence 
+scores, ensuring precise ident ification. This system finds applications in 
+various domains, including security surveillance, autonomous vehicles, retail 
+analytics, and smart traffic management.  
+By integrating Flask as the web framework, the system ensures seamless 
+deployment and access ibility through a web -based interface. The combination 
+of YOLO’s deep learning capabilities and Flask’s lightweight architecture 
+makes this solution robust, scalable, and suitable for diverse AI -driven 
+automation tasks.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+         
+                          2. INTRODUCTION  
+ 
+In today’s fast -paced world, the need for advanced people counting 
+applications has become increasingly important. As public spaces experience 
+higher foot traffic, industries are adopting intelligent monitoring sy stems to 
+enhance security, improve resource management, and optimize customer 
+experiences. These systems are widely used in retail, transportation hubs, 
+event management, and smart city planning.  
+With advancements in AI, machine learning, and computer vision, modern 
+people counting solutions offer high accuracy and real -time analytics. They 
+help businesses analyse  customer behaviour, assist security agencies in crowd 
+monitoring, and enable better d ecision -making in urban infrastructure 
+planning. As urbanization continues to rise, AI -driven people counting 
+technologies will play a key role in shaping safer and more efficient public 
+spaces.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 3. PROBLEM STATEMENT  
+ 
+Traditional object detection models like RCNN and Faster RCNN are 
+accurate but computationally expensive, making them impractical for real -
+time applications. They require significant processing power and are often 
+challenging to deploy in lightweight environments. Additional ly, these 
+models lack user -friendly interfaces, limiting their accessibility to non -
+technical users.  
+This project integrates YOLO with Flask to overcome these challenges. 
+YOLO’s single -shot detection ensures faster inference, while Flask enables 
+seamless w eb-based deployment. The system provides a real -time, efficient, 
+and easy -to-use object detection solution, making it ideal for applications like 
+security surveillance, traffic monitoring, and AI -driven automation. By 
+leveraging deep learning and web techn ologies, this project aims to bridge the 
+gap between high -performance object detection and practical usability.  
+  
+ 
+  4. SYSTEM REQUIREMENTS  
+ 
+4.1 Hardware Requirements  
+ 
+Processor:   i5 or higher (supports GPU acceleration for better 
+performance)  
+RAM:  Minimum 8G B (Recommended: 16GB for deep learning 
+models)  
+GPU:  NVIDIA GPU (Recommended: GTX 1650 or higher)  
+Storage:  20GB+ free space  
+ 
+4.2 Software Requirements  
+ 
+Python 3.8+  
+Flask (for web application)  
+YOLOv5 (for object detection)  
+OpenCV (for image processing)  
+Torch  & torchvision (for deep learning models)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 5. TECHNOLOGIES USED  
+ Backend:  
+Python (Flask): Web framework used for handling routes, 
+authentication, and file uploads.  
+Flask -SQLAlchemy: ORM (Object Relational Mapper) for managing 
+the SQLite database.  
+     Werkzeug Security: Used for hashing passwords securely.  
+Frontend:  
+HTML/CSS : Used for rendering dynamic content.  
+JavaScript: Likely used for interactive elements (not explicitly shown).  
+Database:  
+SQLite: Lightweight database used for storing user authe ntication 
+details.  
+Machine Learning / Computer Vision:  
+YOLOv5 (ultralytics): Pre -trained deep learning model for object 
+detection.  
+PyTorch: Framework used for running YOLOv5.  
+OpenCV: Used for processing images and videos, drawing bounding 
+boxes, and annota ting frames.  
+PIL (Pillow): Used for working with images and drawing bounding 
+boxes. 
+File Handling & Security:  
+Werkzeug (secure_filename): Used to securely save uploaded files.  
+OS Module: Used for file system operations.  
+Video Processing:  
+OpenCV (cv2): Used  to process videos, frame -by-frame detection, and 
+annotations.  
+ 
+  6. EXISTING SYSTEM  
+ 
+Haar Cascades (OpenCV -based):  
+Haar  cascades use predefined features for object detection but suffer from 
+high false positives and poor performance with complex objects and varying 
+conditions. While fast, they lack robustness and accuracy, making them 
+unsuitable for real -time applications.  
+ 
+RCNN and Variants (Fast RCNN, Faster RCNN):  
+RCNN introduced deep learning for object detection but is computationally 
+expensive and slow. Fast RCNN improved speed using Region of Interest 
+(RoI) pooling, but remained inefficient for real -time use. Faster R CNN 
+optimized this further with a Region Proposal Network (RPN), increasing 
+accuracy but still being too slow for real -time applications.  
+ 
+SSD (Single Shot MultiBox Detector):  
+SSD processes an image in a single  pass, making it faster than RCNN 
+models. Howe ver, it is less  accurate  than YOLO, particularly in detecting 
+small or dense objects. Its computational complexity also makes it less 
+efficient for real -time applications.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 7. PROPOSED SYSTEM  
+ 
+ The proposed system is a real -time people detection and  counting 
+application.  
+ It utilizes the YOLOv5 deep learning model for fast and accurate object 
+detection.  
+ Flask is used as the web framework for user interaction.  
+ SQLite is integrated for user management and data storage.  
+ PyTorch is employed for deep learn ing and model execution.  
+ Users can upload images and videos for processing.  
+ The system detects, counts, and annotates people in uploaded media.  
+ It includes video frame analysis for tracking changes over time.  
+ Statistical tracking and visualization provide insights into detected 
+people.  
+ The application is useful for crowd management, security surveillance, 
+and retail analytics  
+ 
+ 
+ 
+ 
+ 
+ 
+  8. USE CASES  
+ Real -Time Crowd Detection  
+o Detects and counts the number of people in a given area using 
+YOLOv5.  
+ Public Safety & Overcrowding Prevention  
+o Monitors crowd density in public places such as railway 
+stations, airports, and events.  
+o Sends alerts if the crowd exceeds a certain threshold, helping 
+prevent stampedes and accidents.  
+ Traffic and Event Management  
+o Helps event organizers manage crowd movement and avoid 
+congestion.  
+o Assists in determining the best entry and exit points for smooth 
+crowd flow.  
+ Retail and Business Analytics  
+o Improves resource allocation by identifying peak hours and 
+crowded areas in malls.  
+ Smart City Development & Urban Planning  
+o Provides data on population movement to city planners.  
+o Helps optimize public transportation and pedestrian pathways.  
+ Pandemic Control & Social Distancing Enforcement  
+o Ensures compliance with social distancing regulations by 
+detecting close gatherings.  
+o Assists in controlling the spread of infectious diseases in 
+crowded areas.  
+ Security & Surveillance  
+o Enhances security by identifying suspicious crowd behaviour . 
+o Assists law enforcement in monitoring high -risk areas and 
+responding  to potential threats.  
+ 
+ 
+  
+9. PROCESS FLOW  
+ 
+ 
+ 
+ 
+
+ 
+  10. SAMPLE CODE  
+ 
+MAIN CODE :  
+ 
+# app.py  
+import cv2  
+from datetime import datetime  
+from flask import Flask, render_template, request, redirect, url_for, flash, session  
+from flask_sqlalchemy import SQLAlchemy  
+from werkzeug.security import generate_password_hash, check_password_hash  
+from werkzeug.utils import secure_filename  
+import torch  
+import os  
+from PIL import Image, ImageDraw  # Add ImageDraw here  
+import numpy as np  
+ 
+app = Flask(_name_)  
+app.config['SECRET_KEY'] =  'your -secret -key-here'  # Change this to a secure secret 
+key 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  
+app.config['UPLOAD_FOLDER'] = 'static/uploads'  
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}  
+ 
+db = SQLAlchemy(app)  
+ 
+# User model for database  
+class User(db.Model):  
+    id = db.Column(db.Integer, primary_key=True)  
+    username = db.Column(db.String(80), unique=True, nullable=False)  
+    password = db.Column(db.String(120), nullable=False)  
+ 
+# Ensure upload folder exists  
+os.makedirs(app.con fig['UPLOAD_FOLDER'], exist_ok=True)  
+ 
+# Load YOLOv5 model  
+from ultralytics import YOLO  
+model = YOLO('yolov5x.pt')  
+ 
+def allowed_file(filename):  
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in 
+ALLOWED_EXTENSIONS  
+ 
+def count_people(image_p ath): 
+    """ 
+ 
+     Count people in an image with optimized parameters for better detection  
+     
+    Args:  
+        image_path: Path to the image  
+    Returns:  
+        tuple: (count of people, list of filtered bounding boxes)  
+    """ 
+    # Load model  
+    global model  
+    if not isinstance(model, YOLO):  
+        model = YOLO('yolov5l.pt')  
+     
+    # Process image with optimized parameters  
+    results = model.predict(  
+        source=image_path,  
+        conf=0.25,        # Lower confidence threshold  
+        iou=0.45,         # Lower IOU threshold for more detections  
+        imgsz=1280,       # High resolution  
+        classes=[0],      # Only detect person class  
+        max_det=100       # Increased maximum detections  
+    ) 
+     
+    people_detections = []  
+    bounding_boxes = []  
+     
+    if len(results) > 0 and len(results[0].boxes) > 0:  
+        boxes = results[0].boxes  
+         
+        # Sort boxes by confidence score  
+        box_scores = [(i, float(box.conf)) for i, box in enumerate(boxes)]  
+        box_sc ores.sort(key=lambda x: x[1], reverse=True)  
+         
+        used_areas = []  
+         
+        for idx, score in box_scores:  
+            box = boxes[idx]  
+            if int(box.cls) == 0:  # Person class  
+                x1, y1, x2, y2 = box.xyxy[0].cpu(). numpy()  
+                conf = float(box.conf)  
+                 
+                # Calculate box dimensions  
+                width = x2 - x1 
+                height = y2 - y1 
+                area = (x2 - x1) * (y2 - y1) 
+                aspect_ratio = height /  width if width > 0 else 0  
+                 
+ 
+                  # More lenient size criteria  
+                is_valid_size = (  
+                    aspect_ratio >= 0.5 and      # Allow wider people  
+                    aspect_ratio <= 4.0 and      # Allow taller  people  
+                    height >= 30 and             # Lower minimum height  
+                    width >= 15                  # Lower minimum width  
+                ) 
+                 
+                # Check overlap with existing detections  
+                overlap = False  
+                for used_box in used_areas:  
+                    ux1, uy1, ux2, uy2 = used_box  
+                    intersection_x1 = max(x1, ux1)  
+                    intersection_y1 = max(y1, uy1)  
+                    intersection_x2 = min (x2, ux2)  
+                    intersection_y2 = min(y2, uy2)  
+                     
+                    if intersection_x2 > intersection_x1 and intersection_y2 > intersection_y1:  
+                        intersection_area  = (intersection_x2 - intersection_x1) * (intersection_y2 - 
+intersection_y1)  
+                        overlap_ratio = intersection_area / min(area, (ux2 - ux1) * (uy2 - uy1))  
+                        if overlap_ratio > 0.7:  # More lenient overlap threshold  
+                            overlap = True  
+                            break  
+                 
+                if is_valid_size and not overlap:  
+                    people_detections.append(box)  
+                    bounding_boxes.append((x1, y1, x2, y2, con f)) 
+                    used_areas.append((x1, y1, x2, y2))  
+     
+    return len(people_detections), bounding_boxes  
+ 
+@app.route('/')  
+def home():  
+    if 'username' not in session:  
+        return redirect(url_for('login'))  
+    return render_template('home.htm l') 
+ 
+@app.route('/signup', methods=['GET', 'POST'])  
+def signup():  
+    if request.method == 'POST':  
+        username = request.form['username']  
+        password = request.form['password']  
+         
+        if User.query.filter_by(username=username).first():  
+            flash('Username already exists')  
+ 
+             return redirect(url_for('signup'))  
+         
+        hashed_password = generate_password_hash(password)  
+        new_user = User(username=username, password=hashed_password)  
+        db.session.add(new_ user)  
+        db.session.commit()  
+         
+        flash('Successfully registered! Please login.')  
+        return redirect(url_for('login'))  
+     
+    return render_template('signup.html')  
+ 
+@app.route('/login', methods=['GET', 'POST'])  
+def login():  
+    if request.method == 'POST':  
+        username = request.form['username']  
+        password = request.form['password']  
+         
+        user = User.query.filter_by(username=username).first()  
+         
+        if user and check_password_hash(user.password, passwor d): 
+            session['username'] = username  
+            return redirect(url_for('home'))  
+        else: 
+            flash('Invalid username or password')  
+     
+    return render_template('login.html')  
+ 
+@app.route('/logout')  
+def logout():  
+    session.pop( 'username', None)  
+    return redirect(url_for('login'))  
+ 
+@app.route('/upload', methods=['POST'])  
+def upload_file():  
+    if 'file' not in request.files:  
+        flash('No file part')  
+        return redirect(url_for('home'))  
+    
+    file = request.files['fil e'] 
+    if file.filename == '':  
+        flash('No selected file')  
+        return redirect(url_for('home'))  
+    
+    if file and allowed_file(file.filename):  
+        filename = secure_filename(file.filename)  
+ 
+          filepath = os.path.join(app.config['UPLOAD _FOLDER'], filename)  
+        file.save(filepath)  
+        
+        # Count people and get detections  
+        people_count, detections = count_people(filepath)  
+        
+        # Draw bounding boxes on the image  
+        img = Image.open(filepath)  
+        img_draw = img.copy()  
+        draw = ImageDraw.Draw(img_draw)  
+        
+        for det in detections:  
+            x1, y1, x2, y2, conf = det  # Unpack the detection  
+            
+            # Draw rectangle  
+            draw.rectangle([(x1, y1), (x2, y2)], ou tline='red', width=2)  
+            # Add confidence score  
+            draw.text((x1, y1 -10), f'{conf:.2f}', fill='red')  
+        
+        # Save annotated image  
+        output_filename = f'annotated_{filename}'  
+        output_filepath = os.path.join(app.confi g['UPLOAD_FOLDER'], output_filename)  
+        img_draw.save(output_filepath)  
+        
+        return render_template('result.html',  
+                             filename=output_filename,  
+                             original_filename=filename,  
+                             people_count=people_count)  
+    
+    flash('Invalid file type')  
+    return redirect(url_for('home'))  
+ 
+@app.route('/upload_video', methods=['POST'])  
+def upload_video():  
+    if 'video' not in request.files:  
+        flash('No video file provided')  
+        return redirect(url_for('home'))  
+     
+    file = request.files['video']  
+    if file.filename == '':  
+        flash('No selected video')  
+        return redirect(url_for('home'))  
+     
+    allowed_video_extensions = {'mp4', 'avi', 'mov', 'mk v'} 
+    if file and '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in 
+allowed_video_extensions:  
+ 
+         filename = secure_filename(file.filename)  
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)  
+        file.save(fil epath)  
+         
+        # Process video and count people  
+        output_path, frame_results = process_video(filepath)  
+        return render_template('video_result.html', 
+video_filename=os.path.basename(output_path), original_filename=filename, 
+frame_result s=frame_results)  
+     
+    flash('Invalid video file type')  
+    return redirect(url_for('home'))  
+ 
+ 
+def draw_box_plot(frame, count_history, max_history=100):  
+    """Draw a box plot of recent people counts at the bottom of the frame"""  
+    height, width = frame.shape[:2]  
+    
+    # Define plot area  
+    plot_height = 100  
+    plot_y = height - plot_height - 10 
+    plot_x = 50  
+    plot_width = width - 100 
+    
+    # Create plot background  
+    cv2.rectangle(frame, (plot_x -2, plot_y -2), 
+                 (plot_x+pl ot_width+2, plot_y+plot_height+2),  
+                 (255, 255, 255), 2)  
+    
+    # Only keep last max_history points  
+    if len(count_history) > max_history:  
+        count_history = count_history[ -max_history:]  
+    
+    if len(count_history) > 0:  
+        # Calculate statistics  
+        max_count = max(max(count_history), 1)  # Avoid division by zero  
+        
+        # Draw points  
+        for i, count in enumerate(count_history):  
+            x = plot_x + int((i / max_history) * plot_width)  
+            y = plot_y  + plot_height - int((count / max_count) * plot_height)  
+            cv2.circle(frame, (x, y), 2, (0, 255, 0), -1) 
+        
+        # Draw current count prominently  
+        current_count = count_history[ -1] 
+        cv2.putText(frame, f'Current Count: { current_count}',  
+ 
+                     (width -300, 50), cv2.FONT_HERSHEY_SIMPLEX,  
+                   1, (0, 255, 0), 2)  
+        
+        # Add y -axis labels  
+        cv2.putText(frame, str(max_count), (plot_x -40, plot_y+10),  
+                   cv2.FONT_HERSHEY_ SIMPLEX, 0.5, (255, 255, 255), 1)  
+        cv2.putText(frame, '0', (plot_x -20, plot_y+plot_height),  
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)  
+    return frame  
+def convert_video_to_web_compatible(input_path):  
+    output_path = inp ut_path.rsplit('.', 1)[0] + '_web.mp4'  
+     
+    try: 
+        stream = ffmpeg.input(input_path)  
+        stream = ffmpeg.output(stream, output_path, vcodec='h264', acodec='aac')  
+        ffmpeg.run(stream, overwrite_output=True)  
+        return output_path  
+    except Exception as e:  
+        print(f"Error converting video: {e}")  
+        return input_path  # Return original file if conversion fails  
+ 
+def process_video(video_path):  
+    import cv2  
+    from datetime import datetime  
+    
+    # Load YOLOv5 model  
+    global model  
+    if not isinstance(model, YOLO):  
+        model = YOLO('yolov5l.pt')  
+    
+    video = cv2.VideoCapture(video_path)  
+    fps = video.get(cv2.CAP_PROP_FPS)  
+    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))  
+    height = int(video.get(cv2.C AP_PROP_FRAME_HEIGHT))  
+    total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))  
+    
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  
+    output_filename = f'counted_{timestamp}_{os.path.basename(video_path)}'  
+    output_path = os.path.join( app.config['UPLOAD_FOLDER'], output_filename)  
+    
+    fourcc = cv2.VideoWriter_fourcc(*'avc1')  
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))  
+    
+    frame_number = 0  
+    frame_results = []  
+    count_history = []  # Store count histor y for plotting  
+ 
+     
+    process_every_n_frames = max(1, int(fps // 2))  
+    
+    while video.isOpened():  
+        ret, frame = video.read()  
+        if not ret:  
+            break  
+            
+        frame_number += 1  
+        
+        if frame_number % process_every_n_frames == 0:  
+            # Run detection  
+            results = model.predict(source=frame, conf=0.25, imgsz=1280)  
+            
+            # Count people  
+            people_count = len([box for box in results[0].boxes if int(box.cls) == 0])  
+            count_history.append(people_count)  
+            
+            # Store result  
+            timestamp_seconds = frame_number / fps  
+            minutes = int(timestamp_seconds // 60)  
+            seconds = int(timestamp_seconds % 60)  
+            frame_ results.append({  
+                'frame': frame_number,  
+                'timestamp': f'{minutes:02d}:{seconds:02d}',  
+                'count': people_count  
+            }) 
+            
+            # Get annotated frame with boxes  
+            annotated_frame =  results[0].plot()  
+            
+            # Add box plot  
+            annotated_frame = draw_box_plot(annotated_frame, count_history)  
+            
+            # Add additional statistics  
+            avg_count = sum(count_history) / len(count_history)  
+            cv2.putText(annotated_frame,  
+                       f'Avg Count: {avg_count:.1f}',  
+                       (50, 90), cv2.FONT_HERSHEY_SIMPLEX,  
+                       1, (0, 255, 0), 2)  
+            
+            out.write(annotated_frame)  
+        else: 
+            # For skipped frames, add box plot to original frame  
+            if count_history:  
+                frame = draw_box_plot(frame, count_history)  
+ 
+              out.write(frame)  
+        
+        if frame_number % 100 == 0:  
+            print(f"Processed {frame_number}/{total_frames} frames")  
+    
+    video.release()  
+    out.release()  
+    web_compatible_path = convert_video_to_web_compatible(output_path)  
+    return web_compatible_path, frame_results     
+if _name_ == '_main_':  
+    with app.a pp_context():  
+        db.create_all()  
+    app.run(debug=True)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 11. OUTPUT  
+Signup  page:  
+ 
+ 
+ 
+ 
+Login Page:  
+ 
+ 
+ 
+
+ 
+  User Page:  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ Image output  Page:  
+ 
+ 
+ 
+ 
+video output  Page:  
+ 
+
+ 
+ 12.ADVANTAGES  
+ Fast Object Detection with YOLO  
+The system uses the YOLOv5 model, which is optimized for real -time 
+object detection. YOLO processes images in a single pass, making it 
+significantly faster compared to traditional methods like RCNN.  
+ Web -Based Interface for  Easy Access  
+The application is built using Flask, allowing users to upload images or 
+videos and get detection results through a simple web interface. This 
+eliminates the need for installing complex software on local machines.  
+ Lightweight and Scalable So lution   
+The system is designed to be efficient, running on minimal resources while 
+still providing high accuracy. It can be deployed on various platforms, 
+including local servers and cloud -based environments, ensuring scalability 
+as needed.  
+ Supports Multiple Image Formats (JPG, PNG, etc.)  
+The application supports commonly used image formats, making it 
+convenient for users to upload and analyse images without worrying about 
+format compatibility.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 13. LIMITATIONS  
+ 
+ 
+ Requires GPU for Real -Time Processing – While the model can run 
+on a CPU, real -time performance is significantly better with a GPU.  
+ Not Suitable for Extremely Large Datasets – Handling very large 
+image datasets or video files may slow down processing and require 
+high computation al power.  
+ Difficulty with Small or Overlapping Objects – YOLO might 
+struggle to detect very small objects or objects that overlap 
+significantly, leading to miscounting.  
+ Limited to Pre -Trained Models – The accuracy depends on the pre -
+trained YOLO model used , and additional training may be required 
+for specific environments.  
+ Higher Resource Consumption for Videos – Processing videos 
+frame -by-frame requires more computational power and storage 
+space, which can be a limitation on low -end hardware.  
+ 
+ 
+ 
+ 
+ 14. CONCLUSION  
+The proposed system utilizes advanced object detection technology 
+through YOLOv5 and Flask to create a socially impactful and accessible 
+solution for real -time image and video analysis. This technology can be 
+applied in various sectors, includin g public safety, traffic monitoring, and 
+assistive technologies for individuals with visual impairments. By 
+providing a web -based interface, the system ensures ease of access, 
+allowing users from different backgrounds to benefit from AI -powered 
+object dete ction.  
+From a social perspective, the system can enhance security through 
+automated surveillance, help in disaster response by identifying critical 
+objects in real -time, and improve accessibility for differently -abled 
+individuals. However, challenges such as dependency on high -end 
+hardware and limitations in detecting small or overlapping objects must be 
+addressed for wider adoption.  
+With future advancements, including cloud -based processing and 
+integration with smart city infrastructure, this system has th e potential to 
+significantly contribute to technological development while addressing 
+critical societal needs.  
+ 
+ 
+ 
+ 15. FUTURE SCOPE  
+The integration of object detection technology in various domains has significant 
+societal and technical implications. In smar t cities and security, the project can 
+enhance surveillance systems by providing real -time object detection, assisting 
+in traffic monitoring, and improving public safety by identifying suspicious 
+activities. In healthcare and accessibility, the application  of YOLO -based 
+detection can aid in medical image analysis, facilitate assistive technology for 
+visually impaired individuals, and monitor patient activities in hospitals for better 
+care. The industrial and automation sector can benefit from this technolog y by 
+automating quality control in manufacturing, improving efficiency in warehouse 
+management, and enabling robotic vision for smart automation. Furthermore, the 
+expansion of AI and cloud computing can integrate this detection system into 
+large -scale data  processing, enhancing AI -driven applications and allowing 
+remote access to object detection technology. With continuous advancements, 
+this project can contribute to a more secure, efficient, and accessible world.  
+ 

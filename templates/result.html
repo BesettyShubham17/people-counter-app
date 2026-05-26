@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto glass-panel rounded-2xl p-10 animate-fade-in-up mt-8">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-600">Analysis Complete</h2>
+        <p class="text-gray-400">Results for <span class="text-white font-medium">{{ original_filename }}</span></p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-10">
+        <!-- Result Stats -->
+        <div class="flex flex-col justify-center items-center p-8 bg-gradient-to-br from-yellow-900/40 to-yellow-800/20 rounded-2xl border border-yellow-500/20 shadow-inner">
+            <h3 class="text-xl text-gray-300 font-medium mb-4">Total People Detected</h3>
+            <div class="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-br from-yellow-400 to-yellow-600 drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]">
+                {{ people_count }}
+            </div>
+            
+            <a href="{{ url_for('home') }}" class="mt-10 px-8 py-3 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/30 rounded-xl transition-all duration-300 flex items-center font-medium text-yellow-400 hover:text-yellow-300">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Analyze Another
+            </a>
+        </div>
+        
+        <!-- Annotated Image -->
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+            <img src="{{ url_for('static', filename='uploads/' + filename) }}" 
+                 alt="Annotated Result" 
+                 class="relative rounded-2xl shadow-2xl w-full object-cover border border-yellow-500/20 z-10 transition-transform duration-500 group-hover:scale-[1.02]">
+        </div>
+    </div>
+</div>
+{% endblock %}

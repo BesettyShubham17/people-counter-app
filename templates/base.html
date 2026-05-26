@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowd Estimator Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1c1c1c 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-delay-100 { animation-delay: 100ms; }
+        .animate-delay-200 { animation-delay: 200ms; }
+        .animate-delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+    <nav class="glass sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-600 hover:scale-105 transition-transform inline-flex items-center gap-2">
+                <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                Crowd Estimator Pro
+            </a>
+            {% if session.username %}
+            <div class="flex items-center space-x-6">
+                <span class="text-gray-300 font-medium">Welcome, <span class="text-yellow-400">{{ session.username }}</span></span>
+                <a href="{{ url_for('logout') }}" class="px-4 py-2 rounded-lg bg-red-900/40 text-red-400 hover:bg-red-900/60 transition-colors duration-300 border border-red-500/30">Logout</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-12 px-4 pb-12">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="animate-fade-in-up max-w-md mx-auto mb-8 z-40 relative">
+                {% for message in messages %}
+                    <div class="glass border-l-4 border-yellow-500 text-yellow-100 px-6 py-4 rounded-lg mb-4 shadow-lg flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
