@@ -1,62 +1,100 @@
-# People Counter App
+# AI-Powered People Counter & Crowd Density Estimator
 
-📌 Project: People Counter App
-👨‍💻 Student: Besetty Shubham
-📱 Domain: Web Development / Computer Vision
-⏳ Duration: Mini Project (Third Year)  
+📌 Project: AI-Powered People Counter & Crowd Density Estimator  
+👨‍💻 Developer: Shubham Besetty  
+📱 Domain: Computer Vision / Web Development  
+⏳ Type: Mini Project  
 
 ---
 
 ## 📖 Project Overview
-The People Counter App is a web-based application developed using Python Flask to automatically count the number of people in an image. 
-Users can upload images, and the app analyzes them to provide a real-time count of people present.
-This tool is useful for tracking occupancy, analyzing crowd density, or monitoring events efficiently without manual counting.  
+This project is a Flask-based web application that uses YOLOv5 for real-time people detection and crowd density estimation.  
+Users can upload both images and videos to detect, count, and analyze people automatically.  
+The system is useful for crowd monitoring, surveillance, occupancy analysis, and public safety management.
 
 ---
 
 ## 🚀 Features
-- Upload an image to get the people count 
-- Automatic detection using computer vision
--Fast and accurate for static images
-- Simple and user-friendly interface
+- Upload images and videos for people detection
+- Real-time crowd density estimation
+- YOLOv5-based object detection
+- Fast and accurate detection
+- User-friendly Flask web interface
+- Video frame-by-frame analysis
+
 ---
 
 ## 🖼️ Output
-### App Screenshot
+### App Screenshots
 ![Screenshot](Screenshot%202025-09-13%20140901.png)  
 ![Screenshot](Screenshot%202025-09-13%20140638.png)  
 ![Screenshot](Screenshot%202025-09-13%20140234.png)  
 
 ---
 
-## ⚙️ Tech Stack
-- Programming Language: Python
-- Frameworks / Libraries: Flask, OpenCV, NumPy  
-- IDE / Environment: PyCharm / VS Code
-- Web Server: Flask built-in server
+## ⚙️ System Requirements
+
+### Hardware
+- Intel i5 Processor or higher
+- Minimum 8GB RAM
+- NVIDIA GPU Recommended
+- 20GB Free Storage
+
+### Software
+- Python 3.8+
+- Flask
+- YOLOv5
+- OpenCV
+- PyTorch & Torchvision
 
 ---
 
-## How to Run
+## 🛠️ Technologies Used
+- Python Flask
+- YOLOv5
+- OpenCV
+- PyTorch
+- SQLite
+- HTML/CSS
+- JavaScript
+
+---
+
+## 📌 Existing System
+Traditional methods like Haar Cascades, RCNN, and SSD are slower and less accurate for real-time crowd analysis.
+
+---
+
+## ✅ Proposed System
+The proposed system uses YOLOv5 with Flask for fast and accurate people detection in images and videos.  
+It performs crowd counting, video analysis, and real-time density estimation efficiently.
+
+---
+
+## ▶️ How to Run
 
 Clone the repository:
 
-git clone https://github.com/Hamsa786/people_counter_app.git
-
+```bash
+git clone https://github.com/BesettyShubham17/people-counter-app.git
+```
 
 Install dependencies:
 
+```bash
 pip install -r requirements.txt
+```
 
+Run the application:
 
-Run the Flask app:
-
+```bash
 python app.py
+```
 
+Open in browser:
 
-Open your browser and go to:
-
+```bash
 http://127.0.0.1:5000
+```
 
-
-Upload an image and view the people count result.
+Upload an image or video and view the people count results.
