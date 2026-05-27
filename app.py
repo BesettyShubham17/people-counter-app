@@ -101,26 +101,54 @@ def logout():
 def upload_file():
     try:
         if 'file' not in request.files:
-            return {"error": "No file part in request"}, 400
-        
+            flash('No file part in request')
+            return redirect(url_for('home'))
+
         file = request.files['file']
         if file.filename == '':
-            return {"error": "No selected file"}, 400
+            flash('No selected file')
+            return redirect(url_for('home'))
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            path = os.path.join("uploads", filename)
-            file.save(path)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
 
-            img = Image.open(path).convert("RGB")
-            result = process_image(img)
+            # Run YOLO inference
+            img = Image.open(filepath).convert("RGB")
+            model = get_model()
+            with torch.no_grad():
+                results = model(img)
 
-            return {"success": True, "count": result}
-        
-        return {"error": "Invalid file type"}, 400
+            boxes = results[0].boxes
+            people_count = len(boxes)
+
+            # Draw bounding boxes using PIL
+            draw = ImageDraw.Draw(img)
+            for box in boxes:
+                x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
+                conf = float(box.conf[0])
+                # Green bounding box
+                draw.rectangle([(x1, y1), (x2, y2)], outline='#00FF00', width=3)
+                draw.text((x1, max(y1 - 14, 0)), f'{conf:.0%}', fill='#00FF00')
+
+            # Save annotated image
+            output_filename = f'annotated_{filename}'
+            output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
+            img.save(output_path)
+
+            return render_template('result.html',
+                                   filename=output_filename,
+                                   original_filename=filename,
+                                   people_count=people_count)
+
+        flash('Invalid file type')
+        return redirect(url_for('home'))
 
     except Exception as e:
-        return {"error": str(e)}, 500
+        print("UPLOAD ERROR:", str(e))
+        flash(f'Processing error: {str(e)}')
+        return redirect(url_for('home'))
 
 @app.route('/upload_video', methods=['POST'])
 def upload_video():
