@@ -98,7 +98,7 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/upload', methods=['POST'])
-def upload():
+def upload_file():
     try:
         file = request.files['file']
         path = "uploads/" + file.filename
