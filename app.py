@@ -25,6 +25,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'crowd-estimator-secret-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv'}
 
 db = SQLAlchemy(app)
 
@@ -47,7 +48,8 @@ def get_model():
 # ─── Helper Functions ────────────────────────────────────────────────────────
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
+    return ext in ALLOWED_EXTENSIONS or ext in ALLOWED_VIDEO_EXTENSIONS
 
 def process_image(img):
     model = get_model()
@@ -101,49 +103,67 @@ def logout():
 def upload_file():
     try:
         if 'file' not in request.files:
-            flash('No file part in request')
-            return redirect(url_for('home'))
+            return {"error": "No file part in request"}, 400
 
         file = request.files['file']
         if file.filename == '':
-            flash('No selected file')
-            return redirect(url_for('home'))
+            return {"error": "No selected file"}, 400
 
         if file and allowed_file(file.filename):
+            ext = file.filename.rsplit('.', 1)[1].lower()
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
-            # Run YOLO inference
-            img = Image.open(filepath).convert("RGB")
-            model = get_model()
-            with torch.no_grad():
-                results = model(img)
+            if ext in ALLOWED_VIDEO_EXTENSIONS:
+                import cv2
+                cap = cv2.VideoCapture(filepath)
+                total_count = 0
+                model = get_model()
+                
+                while cap.isOpened():
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
+                    
+                    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    with torch.no_grad():
+                        results = model(rgb_frame)
+                    total_count += len(results[0].boxes)
+                    
+                cap.release()
+                return {"success": True, "count": total_count}
 
-            boxes = results[0].boxes
-            people_count = len(boxes)
+            else:
+                # Run YOLO inference on Image
+                img = Image.open(filepath).convert("RGB")
+                model = get_model()
+                with torch.no_grad():
+                    results = model(img)
 
-            # Draw bounding boxes using PIL
-            draw = ImageDraw.Draw(img)
-            for box in boxes:
-                x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
-                conf = float(box.conf[0])
-                # Green bounding box
-                draw.rectangle([(x1, y1), (x2, y2)], outline='#00FF00', width=3)
-                draw.text((x1, max(y1 - 14, 0)), f'{conf:.0%}', fill='#00FF00')
+                boxes = results[0].boxes
+                people_count = len(boxes)
 
-            # Save annotated image
-            output_filename = f'annotated_{filename}'
-            output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
-            img.save(output_path)
+                # Draw bounding boxes using PIL
+                draw = ImageDraw.Draw(img)
+                for box in boxes:
+                    x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
+                    conf = float(box.conf[0])
+                    # Green bounding box
+                    draw.rectangle([(x1, y1), (x2, y2)], outline='#00FF00', width=3)
+                    draw.text((x1, max(y1 - 14, 0)), f'{conf:.0%}', fill='#00FF00')
 
-            return render_template('result.html',
-                                   filename=output_filename,
-                                   original_filename=filename,
-                                   people_count=people_count)
+                # Save annotated image
+                output_filename = f'annotated_{filename}'
+                output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
+                img.save(output_path)
 
-        flash('Invalid file type')
-        return redirect(url_for('home'))
+                return render_template('result.html',
+                                       filename=output_filename,
+                                       original_filename=filename,
+                                       people_count=people_count)
+
+        return {"error": "Invalid file type"}, 400
 
     except Exception as e:
         print("UPLOAD ERROR:", str(e))
