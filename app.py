@@ -1,5 +1,7 @@
 # app.py
 import os
+import torch
+torch.set_grad_enabled(False)
 
 # ─── Suppress OpenCV GUI / libxcb crash on headless servers ──────────────────
 os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
@@ -214,38 +216,42 @@ def logout():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        flash('No file part')
+    try:
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(url_for('home'))
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(url_for('home'))
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+
+            people_count, boxes = count_people(filepath)
+
+            img = Image.open(filepath).convert("RGB")
+            draw = ImageDraw.Draw(img)
+            for box in boxes:
+                x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
+                conf = float(box.conf[0])
+                draw.rectangle([(x1, y1), (x2, y2)], outline='red', width=3)
+                draw.text((x1, max(y1 - 12, 0)), f'{conf:.2f}', fill='red')
+
+            output_filename = f'annotated_{filename}'
+            output_filepath = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
+            img.save(output_filepath)
+
+            return render_template('result.html',
+                                   filename=output_filename,
+                                   original_filename=filename,
+                                   people_count=people_count)
+        flash('Invalid file type')
         return redirect(url_for('home'))
-    file = request.files['file']
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(url_for('home'))
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
-
-        people_count, boxes = count_people(filepath)
-
-        img = Image.open(filepath).convert("RGB")
-        draw = ImageDraw.Draw(img)
-        for box in boxes:
-            x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
-            conf = float(box.conf[0])
-            draw.rectangle([(x1, y1), (x2, y2)], outline='red', width=3)
-            draw.text((x1, max(y1 - 12, 0)), f'{conf:.2f}', fill='red')
-
-        output_filename = f'annotated_{filename}'
-        output_filepath = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
-        img.save(output_filepath)
-
-        return render_template('result.html',
-                               filename=output_filename,
-                               original_filename=filename,
-                               people_count=people_count)
-    flash('Invalid file type')
-    return redirect(url_for('home'))
+    except Exception as e:
+        print("ERROR:", str(e))
+        return {"error": str(e)}, 500
 
 @app.route('/upload_video', methods=['POST'])
 def upload_video():
