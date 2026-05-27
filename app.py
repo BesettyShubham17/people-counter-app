@@ -17,6 +17,8 @@ os.environ["OPENCV_LOG_LEVEL"] = "SILENT"
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
+from ultralytics import YOLO
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'crowd-estimator-secret-key-2024')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -41,7 +43,6 @@ _model = None
 def get_model():
     global _model
     if _model is None:
-        from ultralytics import YOLO
         _model = YOLO("yolov8n.pt")
     return _model
 
@@ -52,7 +53,8 @@ def allowed_file(filename):
 
 def process_image(path):
     model = get_model()
-    results = model(path)
+    with torch.no_grad():
+        results = model(path)
     return len(results[0].boxes)
 
 # ─── Routes ──────────────────────────────────────────────────────────────────
@@ -100,13 +102,23 @@ def logout():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     try:
+        if 'file' not in request.files:
+            return {"error": "No file part in request"}, 400
+        
         file = request.files['file']
-        path = "uploads/" + file.filename
-        file.save(path)
+        if file.filename == '':
+            return {"error": "No selected file"}, 400
 
-        result = process_image(path)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            path = os.path.join("uploads", filename)
+            file.save(path)
 
-        return {"success": True, "count": result}
+            result = process_image(path)
+
+            return {"success": True, "count": result}
+        
+        return {"error": "Invalid file type"}, 400
 
     except Exception as e:
         return {"error": str(e)}, 500
