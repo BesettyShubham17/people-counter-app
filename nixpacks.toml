@@ -9,7 +9,8 @@ nixPkgs = [
   "libx11",
   "libxext",
   "libxrender",
-  "libsm"
+  "libsm",
+  "gtk3"
 ]
 
 [phases.install]

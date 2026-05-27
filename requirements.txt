@@ -1,8 +1,8 @@
 flask
 gunicorn
 ultralytics
-torch
+opencv-python-headless
 numpy
 pillow
 Flask-SQLAlchemy
-opencv-python-headless
+torch
