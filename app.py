@@ -111,6 +111,10 @@ def upload_file():
     except Exception as e:
         return {"error": str(e)}, 500
 
+@app.route('/upload_video', methods=['POST'])
+def upload_video():
+    return upload_file()
+
 # ─── Entry Point ─────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
