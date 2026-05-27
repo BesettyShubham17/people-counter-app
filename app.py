@@ -1,6 +1,6 @@
 import os
 import torch
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -116,23 +116,8 @@ def upload_file():
             file.save(filepath)
 
             if ext in ALLOWED_VIDEO_EXTENSIONS:
-                import cv2
-                cap = cv2.VideoCapture(filepath)
-                total_count = 0
-                model = get_model()
-                
-                while cap.isOpened():
-                    ret, frame = cap.read()
-                    if not ret:
-                        break
-                    
-                    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    with torch.no_grad():
-                        results = model(rgb_frame)
-                    total_count += len(results[0].boxes)
-                    
-                cap.release()
-                return {"success": True, "count": total_count}
+                # Render the CCTV interface which will call /video_feed
+                return render_template('cctv.html', filename=filename)
 
             else:
                 # Run YOLO inference on Image
@@ -173,6 +158,69 @@ def upload_file():
 @app.route('/upload_video', methods=['POST'])
 def upload_video():
     return upload_file()
+
+def generate_frames(filepath):
+    import cv2
+    import time
+    
+    cap = cv2.VideoCapture(filepath)
+    model = get_model()
+    prev_time = time.time()
+    CROWD_THRESHOLD = 15
+    
+    while cap.isOpened():
+        success, frame = cap.read()
+        if not success:
+            break
+            
+        with torch.no_grad():
+            # Use YOLO object tracking
+            results = model.track(frame, persist=True, classes=[0], verbose=False)
+            
+        boxes = results[0].boxes
+        count = len(boxes)
+        
+        confs = boxes.conf.cpu().numpy() if len(boxes) > 0 else []
+        avg_conf = (sum(confs) / len(confs)) * 100 if len(confs) > 0 else 0
+        
+        for box in boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
+            conf = float(box.conf[0])
+            track_id = int(box.id[0]) if box.id is not None else -1
+            
+            # Draw tracking box
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            label = f"#{track_id} {conf:.0%}" if track_id != -1 else f"{conf:.0%}"
+            cv2.putText(frame, label, (x1, max(y1-10, 0)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            
+        curr_time = time.time()
+        fps = 1 / (curr_time - prev_time) if curr_time - prev_time > 0 else 0
+        prev_time = curr_time
+        
+        # Overlay CCTV dashboard text
+        cv2.putText(frame, f"People Count: {count}", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+        cv2.putText(frame, f"Accuracy: {avg_conf:.1f}%", (20, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+        cv2.putText(frame, f"FPS: {fps:.1f}", (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+        
+        if count > CROWD_THRESHOLD:
+            cv2.putText(frame, "ALERT: CROWD LIMIT EXCEEDED!", (20, 160), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+            
+        ret, buffer = cv2.imencode('.jpg', frame)
+        if not ret:
+            continue
+            
+        frame_bytes = buffer.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+               
+    cap.release()
+
+@app.route('/video_feed/<filename>')
+def video_feed(filename):
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename))
+    if not os.path.exists(filepath):
+        return "File not found", 404
+    return Response(generate_frames(filepath), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # ─── Entry Point ─────────────────────────────────────────────────────────────
 
