@@ -16,6 +16,7 @@ os.environ["YOLO_OPENCV"] = "0"
 os.environ["OPENCV_LOG_LEVEL"] = "SILENT"
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
 
 from ultralytics import YOLO
 
@@ -38,12 +39,9 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs("uploads", exist_ok=True)
 
 # ─── Model Loading (lazy — avoids import crash on headless servers) ──────────
-_model = None
+_model = YOLO("yolov8n.pt")
 
 def get_model():
-    global _model
-    if _model is None:
-        _model = YOLO("yolov8n.pt")
     return _model
 
 # ─── Helper Functions ────────────────────────────────────────────────────────
@@ -51,10 +49,10 @@ def get_model():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def process_image(path):
+def process_image(img):
     model = get_model()
     with torch.no_grad():
-        results = model(path)
+        results = model(img)
     return len(results[0].boxes)
 
 # ─── Routes ──────────────────────────────────────────────────────────────────
@@ -114,7 +112,8 @@ def upload_file():
             path = os.path.join("uploads", filename)
             file.save(path)
 
-            result = process_image(path)
+            img = Image.open(path).convert("RGB")
+            result = process_image(img)
 
             return {"success": True, "count": result}
         
